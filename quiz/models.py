@@ -496,6 +496,8 @@ class Sitting(models.Model):
         self.user_answers = json.dumps(current)
         self.save()
 
+    # def add_user_answer(self, question, guess)
+
     def get_questions(self, with_answers=False):
         question_ids = self._question_ids()
         questions = sorted(
@@ -536,7 +538,8 @@ class Question(models.Model):
     Base class for all question types.
     Shared properties placed here.
     """
-
+    index = models.IntegerField(verbose_name=_("Index question"), null=True, default=0)
+    
     quiz = models.ManyToManyField(Quiz,
                                   verbose_name=_("Quiz"),
                                   blank=True)
@@ -569,12 +572,18 @@ class Question(models.Model):
                                                "been answered."),
                                    verbose_name=_('Explanation'))
 
+    stop_state = models.BooleanField(default=False,
+                                   blank=True,
+                                   verbose_name=_('Estado de parada?'))
+
+    # index = models.PositiveIntegerField(default=0, blank=False, null=False)
+
     objects = InheritanceManager()
 
     class Meta:
         verbose_name = _("Question")
         verbose_name_plural = _("Questions")
-        ordering = ['category']
+        ordering = ['index']
 
     def __str__(self):
         return self.content

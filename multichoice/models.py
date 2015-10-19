@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext as _
 from django.db import models
-from quiz.models import Question
+from quiz.models import Question, Quiz
 
 
 ANSWER_ORDER_OPTIONS = (
@@ -69,9 +69,18 @@ class Answer(models.Model):
                                   help_text=_("Is this a correct answer?"),
                                   verbose_name=_("Correct"))
 
+    next_question = models.ForeignKey(MCQuestion, 
+                                related_name="next_question_mcquestion_fk",
+                                verbose_name=_("Next Question"), null=True, blank=True)
+    next_quiz = models.ForeignKey(Quiz, 
+                                related_name="next_quiz_mcquestion_fk",
+                                verbose_name=_("Next Quiz"), null=True, blank=True)
+    fix_id = models.IntegerField(verbose_name=_("Id fixo alternativa"), default=0)
+
     def __str__(self):
         return self.content
 
     class Meta:
+        ordering = ["pk"]
         verbose_name = _("Answer")
-        verbose_name_plural = _("Answers")
+        verbose_name_plural = _("Answers")  

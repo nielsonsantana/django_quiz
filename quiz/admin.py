@@ -10,6 +10,7 @@ from essay.models import Essay_Question
 
 class AnswerInline(admin.TabularInline):
     model = Answer
+    fk_name = 'question'
 
 
 class QuizAdminForm(forms.ModelForm):
@@ -64,10 +65,10 @@ class SubCategoryAdmin(admin.ModelAdmin):
 
 
 class MCQuestionAdmin(admin.ModelAdmin):
-    list_display = ('content', 'category', )
+    list_display = ('content', 'category', 'index' )
     list_filter = ('category',)
     fields = ('content', 'category', 'sub_category',
-              'figure', 'quiz', 'explanation', 'answer_order')
+              'figure', 'quiz', 'explanation', 'answer_order', 'stop_state', 'index')
 
     search_fields = ('content', 'explanation')
     filter_horizontal = ('quiz',)
