@@ -538,8 +538,6 @@ class Question(models.Model):
     Base class for all question types.
     Shared properties placed here.
     """
-    index = models.IntegerField(verbose_name=_("Index question"), null=True, default=0)
-    
     quiz = models.ManyToManyField(Quiz,
                                   verbose_name=_("Quiz"),
                                   blank=True)
@@ -576,6 +574,14 @@ class Question(models.Model):
                                    blank=True,
                                    verbose_name=_('Estado de parada?'))
 
+    custom_template = models.CharField(max_length=255,
+                               blank=True,
+                               null=True,
+                               help_text=_("Template de pergunta customizado"),
+                               verbose_name=_('Custom template'))
+
+    index = models.IntegerField(verbose_name=_("Index question"), null=True, default=0)
+    
     # index = models.PositiveIntegerField(default=0, blank=False, null=False)
 
     objects = InheritanceManager()
@@ -586,4 +592,4 @@ class Question(models.Model):
         ordering = ['index']
 
     def __str__(self):
-        return self.content
+        return "%s - %s" % (self.content, self.category) 

@@ -49,6 +49,13 @@ class MCQuestion(Question):
     def answer_choice_to_string(self, guess):
         return Answer.objects.get(id=guess).content
 
+    def get_answer_by_index(self, index):
+        answers = Answer.objects.filter(question=self)
+        if index < len(answers):
+            return answers[index]
+        return False
+
+
     class Meta:
         verbose_name = _("Multiple Choice Question")
         verbose_name_plural = _("Multiple Choice Questions")
@@ -75,7 +82,7 @@ class Answer(models.Model):
     next_quiz = models.ForeignKey(Quiz, 
                                 related_name="next_quiz_mcquestion_fk",
                                 verbose_name=_("Next Quiz"), null=True, blank=True)
-    fix_id = models.IntegerField(verbose_name=_("Id fixo alternativa"), default=0)
+    index = models.IntegerField(verbose_name=_("Id fixo alternativa"), default=0)
 
     def __str__(self):
         return self.content
